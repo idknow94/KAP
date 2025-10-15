@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <!-- Issue Card -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title">{{ issue.title }}</h3>
+                <p class="card-text">{{ issue.description }}</p>
+                <p class="text-muted">
+                    By {{ issue.author.username }} | Status: {{ issue.get_status_display }} | Likes: {{ issue.total_likes }}
+                </p>
+                
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'issue_like_toggle' issue.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            {% if user in issue.likes.all %}Unlike{% else %}Like{% endif %}
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <h5>Comments</h5>
+        {% for comment in issue.comments.all %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p>{{ comment.text }}</p>
+                    <p class="text-muted mb-0">By {{ comment.author.username }} | Likes: {{ comment.total_likes }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+
+        <!-- Add Comment Form -->
+        {% if user.is_authenticated %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6>Add a Comment</h6>
+                    <form method="post" action="{% url 'add_comment' issue.id %}">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="mt-3"> <a href="{% url 'login' %}">Login</a> to post a comment.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
