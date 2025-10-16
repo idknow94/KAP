@@ -1,0 +1,10 @@
+:root {
+  --bs-primary: #412121; /* Replace with your color (e.g., Campion blue/purple) */
+}
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.navbar.bg-primary {
+  background-color: var(--bs-primary) !important;
+}

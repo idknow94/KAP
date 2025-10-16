@@ -2,9 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-
+from django.urls import reverse_lazy
 from .forms import IssueForm, CommentForm
 from .models import Issue, Comment
+from django.views.generic import CreateView
+from .forms import CampionSignupForm
+
+
+class CampionSignupView(CreateView):
+    template_name = 'registration/signup.html'
+    form_class = CampionSignupForm
+    success_url = reverse_lazy('login')
 
 # Signup view
 
@@ -121,3 +129,39 @@ def issue_like_toggle(request, issue_id):
     if referer:
         return redirect(referer)
     return redirect('issue_detail', issue_id=issue.id)
+
+
+@login_required
+def comment_like_toggle(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user in comment.likes.all():
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+
+    # Redirect back to the referring page (list or detail)
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    return redirect('issue_detail', comment_id=comment.id)
+
+
+@login_required
+def issue_delete(request, issue_id):
+    issue = get_object_or_404(Issue, id=issue_id)
+
+    if request.user.id == issue.author.id:
+        issue.delete()
+
+    return redirect('home')
+
+
+@login_required
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    issue_id = comment.issue.id
+    if request.user.id == comment.author.id:
+        comment.delete()
+
+    return redirect('issue', issue_id)

@@ -15,13 +15,21 @@
                     </h5>
                     <p class="card-text">{{ issue.description|truncatechars:150 }}</p>
                     <p class="text-muted mb-0">
-                        By {{ issue.author.username }} | Status: {{ issue.get_status_display }} | Upvotes: {{ issue.total_likes }}
+                        By {{ issue.author.username }} | Status: {{ issue.get_status_display }}
                     </p>
                     {% if user.is_authenticated %}
                         <form method="post" action="{% url 'issue_like_toggle' issue.id %}" class="mt-2">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-primary btn-sm">
-                                {% if user in issue.likes.all %}Unlike{% else %}Like{% endif %}
+                                {% if user in issue.likes.all %}🩷{% else %}🤍{% endif %} {{ issue.total_likes }}
+                            </button>
+                        </form>
+                    {% endif %}
+                    {% if user.id == issue.author.id %}
+                        <form method="post" action="{% url 'issue_delete' issue.id %}" class="mt-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary btn-sm">
+                                🗑️
                             </button>
                         </form>
                     {% endif %}

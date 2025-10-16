@@ -40,8 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'issues'
 ]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_ADAPTER = "core.adapters.RestrictEmailAdapter"
+SOCIALACCOUNT_ADAPTER = "core.adapters.RestrictGoogleDomainAdapter"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

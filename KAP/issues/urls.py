@@ -9,7 +9,11 @@ urlpatterns = [
          name='issue_create'),  # Raise new issue
     path('issue/<int:issue_id>/like/', views.issue_like_toggle,
          name='issue_like_toggle'),  # Like/Unlike
-    path('signup/', views.signup_view, name='signup'),  # Sign up
+    path('issue/<int:issue_id>/delete', views.issue_delete, name='issue_delete'),
+    path('comment/<int:comment_id>/delete',
+         views.comment_delete, name='comment_delete'),
+    path('comment/<int:comment_id>/like/', views.comment_like_toggle,
+         name='comment_like_toggle'),  # Like/Unlike
     path('comment/<int:issue_id>/add/', views.add_comment,
          name='add_comment'),  # Add comment
 ]

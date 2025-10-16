@@ -11,16 +11,24 @@
                 <h3 class="card-title">{{ issue.title }}</h3>
                 <p class="card-text">{{ issue.description }}</p>
                 <p class="text-muted">
-                    By {{ issue.author.username }} | Status: {{ issue.get_status_display }} | Likes: {{ issue.total_likes }}
+                    By {{ issue.author.username }} | Status: {{ issue.get_status_display }}
                 </p>
                 
                 {% if user.is_authenticated %}
                     <form method="post" action="{% url 'issue_like_toggle' issue.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-primary btn-sm">
-                            {% if user in issue.likes.all %}Unlike{% else %}Like{% endif %}
+                            {% if user in issue.likes.all %}🩷{% else %}🤍{% endif %} {{ issue.total_likes }}
                         </button>
                     </form>
+                    {% if user.id == issue.author.id %}
+                    <form method="post" action="{% url 'issue_delete' issue.id %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            🗑️
+                        </button>
+                    </form>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -31,7 +39,24 @@
             <div class="card mb-2">
                 <div class="card-body">
                     <p>{{ comment.text }}</p>
-                    <p class="text-muted mb-0">By {{ comment.author.username }} | Likes: {{ comment.total_likes }}</p>
+                    <p class="text-muted mb-0">By {{ comment.author.username }}</p>
+                    {% if user.is_authenticated %}
+                    <p></p>
+                    <form method="post" action="{% url 'comment_like_toggle' comment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            {% if user in comment.likes.all %}🩷{% else %}🤍{% endif %} {{ comment.total_likes }}
+                        </button>
+                    </form>
+                    {% if user.id == issue.author.id %}
+                    <form method="post" action="{% url 'comment_delete' comment.id %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                            🗑️
+                        </button>
+                    </form>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
         {% empty %}
