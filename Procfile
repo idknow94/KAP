@@ -1,1 +1,1 @@
-web: gunicorn KAP.KAP.wsgi:application --chdir KAP --bind 127.0.0.1:8000
+web: gunicorn KAP.wsgi:application --chdir KAP --bind 127.0.0.1:8000
