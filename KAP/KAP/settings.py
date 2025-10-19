@@ -29,9 +29,9 @@ SECRET_KEY = env('KEY')
 DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
-                 'kap-student-council.up.railway.app', 'kap-giau.onrender.com']
+                 'kap-student-council.up.railway.app', 'kap-giau.onrender.com', '0.0.0.0', '.ngrok-free.app']
 CSRF_TRUSTED_ORIGINS = [
-    'https://kap-student-council.up.railway.app', 'https://kap-giau.onrender.com']
+    'https://kap-student-council.up.railway.app', 'https://kap-giau.onrender.com', 'https://*.ngrok-free.app']
 
 # Application definition
 

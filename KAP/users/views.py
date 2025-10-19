@@ -40,7 +40,7 @@ class CampionSignupView(CreateView):
         subject = "Verify your KAP account"
         message = render_to_string('users/verify_email.html', {
             'user': user,
-            'domain': current_site.domain,
+            'domain': request.get_host(),
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
         })
