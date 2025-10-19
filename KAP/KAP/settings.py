@@ -28,8 +28,10 @@ SECRET_KEY = env('KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['127.0.0.1']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+RAILWAY_URL = env('RAILWAY_URL')
+if RAILWAY_URL:
+    ALLOWED_HOSTS.append(RAILWAY_URL)
 
 # Application definition
 
@@ -107,7 +109,7 @@ DATABASES = {
     }
 }
 
-PRODUCTION = False
+PRODUCTION = env.bool('PRODUCTION', default=False)
 
 if PRODUCTION:
     DATABASES['default'] = dj_database_url.parse(env('DB_URL'))
