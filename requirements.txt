@@ -4,3 +4,4 @@ crispy-bootstrap5
 django-environ
 psycopg2-binary
 dj-database-url
+gunicorn
