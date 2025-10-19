@@ -28,11 +28,9 @@ SECRET_KEY = env('KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=True)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-RAILWAY_URL = env('RAILWAY_URL')
-if RAILWAY_URL:
-    ALLOWED_HOSTS.append(RAILWAY_URL)
-    CSRF_TRUSTED_ORIGINS = [f'https://{RAILWAY_URL}']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost',
+                 'kap-student-council.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://kap-student-council.up.railway.app']
 
 # Application definition
 
