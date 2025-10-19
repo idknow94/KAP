@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 RAILWAY_URL = env('RAILWAY_URL')
 if RAILWAY_URL:
     ALLOWED_HOSTS.append(RAILWAY_URL)
+    CSRF_TRUSTED_ORIGINS = [f'https://{RAILWAY_URL}']
 
 # Application definition
 
