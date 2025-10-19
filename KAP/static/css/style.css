@@ -1,0 +1,27 @@
+:root {
+  --bs-primary: #2e3c6f; /* Replace with your color (e.g., Campion blue/purple) */
+}
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.navbar.bg-primary {
+  background-color: var(--bs-primary) !important;
+}
+.avatar-label {
+    position: relative;
+}
+
+.avatar-check {
+    pointer-events: none; /* so clicks go to the label/input */
+    box-sizing: border-box;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-check.selected {
+    border-color: #0d6efd; /* Bootstrap primary */
+}
+

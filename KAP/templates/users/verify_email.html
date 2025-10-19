@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Verify your email</title>
+  </head>
+  <body>
+    <p>Hi {{ user.username }},</p>
+    <p>Thanks for signing up! Click the link below to verify your account:</p>
+    <p><a href="http://{{ domain }}{% url 'verify_email' uidb64=uid token=token %}">
+      Verify My Email
+    </a></p>
+    <p>If you didn't sign up, ignore this email.</p>
+  </body>
+</html>

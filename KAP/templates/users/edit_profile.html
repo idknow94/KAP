@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 mt-5">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Edit Profile</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Select an avatar:</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for value, label in form.avatar.field.choices %}
+                                <label class="d-block text-center">
+                                    <input type="radio" name="{{ form.avatar.name }}" value="{{ value }}"
+                                        {% if form.avatar.value == value %}checked{% endif %} class="form-check-input mb-1">
+                                    <img src="{% static 'avatars/' %}{{ value }}" class="rounded-circle border" style="width:80px;height:80px;object-fit:cover;">
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {{ form.bio|as_crispy_field }}
+
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Save Changes</button>
+                    <a href="{% url 'profile' user.username %}" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

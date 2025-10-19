@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify Email Sent{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center p-4">
+          <h3 class="card-title mb-3 text-success">
+            <i class="bi bi-envelope-check"></i> Check Your Email
+          </h3>
+
+          <p class="text-muted mb-4">
+            We've sent a verification link to your email address.
+            Please open your inbox and click the link to activate your account.
+          </p>
+
+          <div class="alert alert-info text-start small">
+            <strong>Didn’t get the email?</strong><br>
+            • Check your spam or junk folder.<br>
+            • Make sure you entered the correct address.<br>
+            • You can try signing up again if needed.
+          </div>
+
+          <a href="{% url 'login' %}" class="btn btn-primary w-100 mt-3">
+            Back to Login
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

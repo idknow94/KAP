@@ -1,0 +1,58 @@
+<div class="card mb-3 position-relative">
+    <div class="card-body">
+        <!-- Top-right delete button -->
+        {% if user.is_authenticated and user.id == issue.author.id %}
+            <form method="post" action="{% url 'issue_delete' issue.id %}" class="position-absolute" style="top:15px; right:15px;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete Issue">🗑️</button>
+            </form>
+        {% endif %}
+
+        <h5 class="card-title">
+            {% if detail %}
+                {{ issue.title }}
+            {% else %}
+                <a href="{% url 'issue_detail' issue.id %}">{{ issue.title }}</a>
+            {% endif %}
+        </h5>
+
+        <p class="card-text">
+            {% if detail %}
+                {{ issue.description }}
+            {% else %}
+                {{ issue.description|truncatechars:150 }}
+            {% endif %}
+        </p>
+
+        <p class="mb-2">
+            <a href="{% url 'profile' issue.author.username %}">By {{ issue.author.username }}</a> | 
+            Status: 
+            {% if issue.status == 'OPEN' %}
+                <span class="badge bg-success">Open</span>
+            {% else %}
+                <span class="badge bg-secondary">Resolved</span>
+            {% endif %}
+        </p>
+        {% if detail %}
+        {% if user.is_superuser %}
+            <form method="post" action="{% url 'change_issue_status' issue.id %}">
+                {% csrf_token %}
+                <select name="status" class="form-select form-select-sm w-auto d-inline">
+                    <option value="OPEN" {% if issue.status == 'OPEN' %}selected{% endif %}>Open</option>
+                    <option value="RESOLVED" {% if issue.status == 'RESOLVED' %}selected{% endif %}>Resolved</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+            </form>
+        {% endif %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'issue_like_toggle' issue.id %}" class="mt-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary btn-sm">
+                    {% if user in issue.likes.all %}🩷{% else %}🤍{% endif %} {{ issue.total_likes }}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>

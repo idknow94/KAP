@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <div class="text-center">
+    <img src="{% static 'avatars/' %}{{ profile_user.profile.avatar }}" class="rounded-circle mb-3" height="100" width="100" style="object-fit: cover;">
+    <h3>
+      {{ profile_user.username }}
+      {% if profile_user.is_superuser %}
+        <img src="{% static 'logo.png' %}" class="mb-3" height="40">
+      {% endif %}
+    </h3>
+    
+    <p>{{ profile_user.profile.bio|default:"No bio yet." }}</p>
+
+    {% if profile_user == user %}
+      <p><strong>Tokens left:</strong> {{ profile_user.profile.tokens }}/3</p>
+      <!-- Edit Profile Button -->
+      <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-sm mt-2">Edit Profile</a>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <h4>Issues Posted</h4>
+  {% for issue in issues %}
+    {% include 'issues/_issue_card.html' with issue=issue detail=False %}
+  {% empty %}
+    <p>No issues posted yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

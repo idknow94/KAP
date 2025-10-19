@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}All Issues{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">All Issues</h2>
+
+        {% for issue in issues %}
+            {% include 'issues/_issue_card.html' with issue=issue detail=False %}
+        {% empty %}
+            <p>No issues have been raised yet. Be the first!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

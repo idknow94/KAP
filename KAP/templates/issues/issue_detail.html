@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <!-- Issue Card -->
+        {% include 'issues/_issue_card.html' with issue=issue detail=True %}
+
+
+        <!-- Comments Section -->
+        <h5>Comments</h5>
+        {% for comment in issue.comments.all %}
+            <div class="card mb-2 position-relative">
+                <div class="card-body">
+                    <!-- Top-right delete button for comment -->
+                    {% if user.is_authenticated and user.id == comment.author.id %}
+                        <form method="post" action="{% url 'comment_delete' comment.id %}" class="position-absolute" style="top:15px; right:15px;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete Comment">🗑️</button>
+                        </form>
+                    {% endif %}
+
+                    <p>{{ comment.text }}</p>
+                    <p class="text-muted mb-0">By {{ comment.author.username }}</p>
+
+                    <!-- Like button -->
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'comment_like_toggle' comment.id %}" style="bottom: 10px; left: 10px;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary btn-sm mt-1">
+                                {% if user in comment.likes.all %}🩷{% else %}🤍{% endif %} {{ comment.total_likes }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+
+        <!-- Add Comment Form -->
+        {% if user.is_authenticated %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6>Add a Comment</h6>
+                    <form method="post" action="{% url 'add_comment' issue.id %}">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100 mt-2">Post Comment</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p class="mt-3"> <a href="{% url 'login' %}">Login</a> to post a comment.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
